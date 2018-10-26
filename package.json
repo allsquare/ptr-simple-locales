@@ -1,5 +1,5 @@
 {
-  "name": "ptr-lib-base",
+  "name": "ptr-mobx-locales",
   "version": "0.0.0",
   "description": "",
   "author": "Alexis Bertholom <alexis.bertholom.jd@gmail.com> (http://github.com/alexisbertholom)",
@@ -13,6 +13,12 @@
     "release": ".bin/release"
   },
   "devDependencies": {
+    "mobx": "^5.5.2",
+    "moment": "^2.22.2",
     "typescript": "^3.3.3333"
+  },
+  "peerDependencies": {
+    "mobx": "^5.5.2",
+    "moment": "^2.22.2"
   }
 }
