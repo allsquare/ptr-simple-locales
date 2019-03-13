@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+    echo "Usage: remove-version <version>"
+    exit -1
+fi
+
+VERSION="$1"
+
+git tag --delete "$VERSION"
+git push --delete origin "$VERSION"

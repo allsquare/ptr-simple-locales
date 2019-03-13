@@ -1,0 +1,39 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ES2015",
+    "lib": ["es6", "dom", "es5"],
+    "module": "commonjs",
+    "jsx": "react",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "pretty": false,
+    "removeComments": true,
+
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "outDir": "./build"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "filesGlob": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "files": [
+    "./src/index.ts"
+  ]
+}

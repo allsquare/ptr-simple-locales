@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+    echo "Usage: deploy <version> [<prefix>]"
+    exit -1
+fi
+
+VERSION="$1"
+
+if [ -z "$2" ]
+then
+    PREFIXED_VERSION="v$VERSION"
+else
+    PREFIXED_VERSION="$2-v$VERSION"
+fi
+
+
+BIN="$(dirname "$0")"
+
+git stash
+yarn dist
+"$BIN/update-package-version" "$VERSION"
+git add dist package.json
+git commit -m "release: $PREFIXED_VERSION"
+git stash pop
+git tag -a "$PREFIXED_VERSION" -m "$PREFIXED_VERSION"
+git push && git push --tag
