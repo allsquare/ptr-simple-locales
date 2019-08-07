@@ -2,15 +2,32 @@ import * as moment from 'moment';
 import { observable, action } from 'mobx';
 import { LocaleResourcesBase } from './types';
 
+export interface LocaleStorage<LocaleT>
+{
+  store(locale: LocaleT),
+  get(): LocaleT | null,
+  clear(): void,
+}
+
 export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
 {
   @observable private _currentLocaleResources: ResourcesT;
   @observable private _currentLocale: LocaleT;
 
-  constructor(private _mappings: Map<LocaleT, ResourcesT>, defaultLocale: LocaleT)
+  constructor(private _mappings: Map<LocaleT, ResourcesT>, defaultLocale: LocaleT, private _storage?: LocaleStorage<LocaleT>)
   {
-    this.setLocale(defaultLocale);
-    if (!this._currentLocaleResources)
+    if (_storage)
+    {
+      const storedLocale = _storage.get();
+      if (storedLocale)
+      {
+        if (this.setLocale(storedLocale, false))
+          return;
+        console.warn(`Locales: invalid stored locale: ${storedLocale}`);
+        _storage.clear();
+      }
+    }
+    if (!this.setLocale(defaultLocale, false))
       throw new Error(`Locales: invalid default locale: ${defaultLocale}`);
   }
 
@@ -59,7 +76,7 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
     return this._currentLocale;
   }
 
-  @action setLocale(locale: LocaleT)
+  @action public setLocale(locale: LocaleT, store: boolean = true): boolean
   {
     const res = this._mappings.get(locale);
     if (res)
@@ -67,6 +84,10 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
       moment.locale(res.moment);
       this._currentLocale = locale;
       this._currentLocaleResources = res;
+      if (store && this._storage)
+        this._storage.store(locale);
+      return true;
     }
+    return false;
   }
 };

@@ -1,6 +1,6 @@
 export * from './types';
-import Locales from './Locales';
+import Locales, { LocaleStorage } from './Locales';
 
-export { Locales };
+export { Locales, LocaleStorage };
 
 export default Locales;
