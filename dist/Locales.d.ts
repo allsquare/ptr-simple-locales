@@ -1,9 +1,15 @@
 import { LocaleResourcesBase } from './types';
+export interface LocaleStorage<LocaleT> {
+    store(locale: LocaleT): any;
+    get(): LocaleT | null;
+    clear(): void;
+}
 export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase> {
     private _mappings;
+    private _storage?;
     private _currentLocaleResources;
     private _currentLocale;
-    constructor(_mappings: Map<LocaleT, ResourcesT>, defaultLocale: LocaleT);
+    constructor(_mappings: Map<LocaleT, ResourcesT>, defaultLocale: LocaleT, _storage?: LocaleStorage<LocaleT> | undefined);
     formatDate(date: Date): string;
     formatTime(date: Date): string;
     formatDateTime(date: Date): string;
@@ -13,5 +19,5 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase> {
     readonly locales: Map<LocaleT, ResourcesT>;
     readonly current: ResourcesT;
     readonly currentLocale: LocaleT;
-    setLocale(locale: LocaleT): void;
+    setLocale(locale: LocaleT, store?: boolean): boolean;
 }

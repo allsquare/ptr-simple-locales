@@ -12,10 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const moment = require("moment");
 const mobx_1 = require("mobx");
 class Locales {
-    constructor(_mappings, defaultLocale) {
+    constructor(_mappings, defaultLocale, _storage) {
         this._mappings = _mappings;
-        this.setLocale(defaultLocale);
-        if (!this._currentLocaleResources)
+        this._storage = _storage;
+        if (_storage) {
+            const storedLocale = _storage.get();
+            if (storedLocale) {
+                if (this.setLocale(storedLocale, false))
+                    return;
+                console.warn(`Locales: invalid stored locale: ${storedLocale}`);
+                _storage.clear();
+            }
+        }
+        if (!this.setLocale(defaultLocale, false))
             throw new Error(`Locales: invalid default locale: ${defaultLocale}`);
     }
     formatDate(date) {
@@ -45,13 +54,17 @@ class Locales {
     get currentLocale() {
         return this._currentLocale;
     }
-    setLocale(locale) {
+    setLocale(locale, store = true) {
         const res = this._mappings.get(locale);
         if (res) {
             moment.locale(res.moment);
             this._currentLocale = locale;
             this._currentLocaleResources = res;
+            if (store && this._storage)
+                this._storage.store(locale);
+            return true;
         }
+        return false;
     }
 }
 __decorate([
@@ -65,8 +78,8 @@ __decorate([
 __decorate([
     mobx_1.action,
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object, Boolean]),
+    __metadata("design:returntype", Boolean)
 ], Locales.prototype, "setLocale", null);
 exports.default = Locales;
 ;
