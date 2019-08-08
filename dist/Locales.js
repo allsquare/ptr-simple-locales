@@ -17,7 +17,7 @@ class Locales {
         this._storage = _storage;
         if (_storage) {
             const storedLocale = _storage.get();
-            if (storedLocale) {
+            if (storedLocale !== null) {
                 if (this.setLocale(storedLocale, false))
                     return;
                 console.warn(`Locales: invalid stored locale: ${storedLocale}`);
