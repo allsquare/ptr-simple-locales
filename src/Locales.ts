@@ -19,7 +19,7 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
     if (_storage)
     {
       const storedLocale = _storage.get();
-      if (storedLocale)
+      if (storedLocale !== null)
       {
         if (this.setLocale(storedLocale, false))
           return;
