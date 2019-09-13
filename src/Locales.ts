@@ -14,7 +14,7 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
   @observable private _currentLocaleResources: ResourcesT;
   @observable private _currentLocale: LocaleT;
 
-  constructor(private _mappings: Map<LocaleT, ResourcesT>, defaultLocale: LocaleT, private _storage?: LocaleStorage<LocaleT>)
+  constructor(private _mappings: Map<LocaleT, ResourcesT>, private _defaultLocale: LocaleT, private _storage?: LocaleStorage<LocaleT>)
   {
     if (_storage)
     {
@@ -27,8 +27,8 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
         _storage.clear();
       }
     }
-    if (!this.setLocale(defaultLocale, false))
-      throw new Error(`Locales: invalid default locale: ${defaultLocale}`);
+    if (!this.setLocale(_defaultLocale, false))
+      throw new Error(`Locales: invalid default locale: ${_defaultLocale}`);
   }
 
   public get locales()
@@ -44,6 +44,11 @@ export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase>
   public get currentLocale()
   {
     return this._currentLocale;
+  }
+
+  public get defaultLocale()
+  {
+    return this._defaultLocale;
   }
 
   @action public setLocale(locale: LocaleT, store: boolean = true): boolean
