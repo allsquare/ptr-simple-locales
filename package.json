@@ -4,7 +4,8 @@
   "description": "",
   "author": "Alexis Bertholom <alexis.bertholom.jd@gmail.com> (http://github.com/alexisbertholom)",
   "license": "ISC",
-  "main": "dist/index.js",
+  "main": "dist",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
