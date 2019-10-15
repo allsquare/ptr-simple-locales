@@ -9,7 +9,10 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf build dist",
-    "dist": "yarn run clean && tsc --declaration --outDir dist",
+    "dist:cjs": "tsc --outDir dist --module commonjs",
+    "dist:esm": "tsc --outDir dist --module ES6 && .bin/change-extensions dist js mjs && .bin/change-extensions dist js.map mjs.map",
+    "dist:dts": "tsc --outDir dist --declaration --emitDeclarationOnly",
+    "dist": "yarn run clean && yarn run dist:esm && yarn run dist:cjs && yarn run dist:dts",
     "release": ".bin/release"
   },
   "devDependencies": {
