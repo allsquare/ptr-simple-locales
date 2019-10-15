@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$#" -ne 3 ]
+then
+    echo "Usage: change-extensions <search-directory> <from-extension> <to-extension>"
+    exit -1
+fi
+
+SEARCH_DIRECTORY="$1"
+FROM_EXTENSION="$2"
+TO_EXTENSION="$3"
+
+RENAME_SCRIPT="mv \"\$1\" \"\${1%.$FROM_EXTENSION}\".$TO_EXTENSION"
+
+find "$SEARCH_DIRECTORY" -name "*.$FROM_EXTENSION" -exec bash -c "$RENAME_SCRIPT" - '{}' \;
