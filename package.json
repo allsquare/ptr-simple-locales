@@ -13,11 +13,8 @@
     "release": ".bin/release"
   },
   "devDependencies": {
-    "mobx": "^5.5.2",
     "typescript": "^3.6.3"
   },
-  "peerDependencies": {
-    "mobx": "^5.5.2"
-  },
+  "peerDependencies": {},
   "sideEffects": false
 }
