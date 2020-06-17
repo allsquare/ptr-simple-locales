@@ -1,5 +1,3 @@
-import { observable, action, computed } from 'mobx';
-
 export interface LocaleStorage<LocaleT>
 {
   store(locale: LocaleT),
@@ -16,7 +14,7 @@ export interface LocaleResources<LocaleT, T>
 
 export default class Locales<LocaleT>
 {
-  @observable private _currentLocale: LocaleT;
+  private _currentLocale: LocaleT;
   private _validLocales: Set<LocaleT> | null = null;
 
   constructor(
@@ -70,7 +68,6 @@ export default class Locales<LocaleT>
     this._checkNewResourcesMappings<ResourcesT>(mappings);
 
     const This = this;
-    const current = computed<ResourcesT>(() => mappings.get(this._currentLocale)!);
     return {
       get locales()
       {
@@ -79,7 +76,7 @@ export default class Locales<LocaleT>
 
       get current(): ResourcesT
       {
-        return current.get();
+        return mappings.get(This._currentLocale)!;
       },
 
       get parent()
@@ -99,7 +96,7 @@ export default class Locales<LocaleT>
     return this._defaultLocale;
   }
 
-  @action private _setLocale(locale: LocaleT)
+  private _setLocale(locale: LocaleT)
   {
     this._currentLocale = locale;
   }
