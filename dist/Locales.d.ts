@@ -1,23 +1,23 @@
-import { LocaleResourcesBase } from './types';
 export interface LocaleStorage<LocaleT> {
     store(locale: LocaleT): any;
     get(): LocaleT | null;
     clear(): void;
 }
-export default class Locales<LocaleT, ResourcesT extends LocaleResourcesBase> {
-    private _mappings;
+export interface LocaleResources<LocaleT, T> {
+    locales: Map<LocaleT, T>;
+    current: T;
+    parent: Locales<LocaleT>;
+}
+export default class Locales<LocaleT> {
+    private _defaultLocale;
     private _storage?;
-    private _currentLocaleResources;
     private _currentLocale;
-    constructor(_mappings: Map<LocaleT, ResourcesT>, defaultLocale: LocaleT, _storage?: LocaleStorage<LocaleT> | undefined);
-    formatDate(date: Date): string;
-    formatTime(date: Date): string;
-    formatDateTime(date: Date): string;
-    formatNullableDate(date: Date | null, nullString: string): string;
-    formatNullableTime(date: Date | null, nullString: string): string;
-    formatNullableDateTime(date: Date | null, nullString: string): string;
-    readonly locales: Map<LocaleT, ResourcesT>;
-    readonly current: ResourcesT;
+    private _validLocales;
+    constructor(_defaultLocale: LocaleT, _storage?: LocaleStorage<LocaleT> | undefined, validLocales?: Set<LocaleT>);
+    private _checkNewResourcesMappings;
+    createResources<ResourcesT>(mappings: Map<LocaleT, ResourcesT>): LocaleResources<LocaleT, ResourcesT>;
     readonly currentLocale: LocaleT;
+    readonly defaultLocale: LocaleT;
+    private _setLocale;
     setLocale(locale: LocaleT, store?: boolean): boolean;
 }
