@@ -4,12 +4,16 @@
   "description": "",
   "author": "Alexis Bertholom <alexis.bertholom.jd@gmail.com> (http://github.com/alexisbertholom)",
   "license": "ISC",
-  "main": "dist/index.js",
+  "main": "dist",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf build dist",
-    "dist": "yarn run clean && tsc --declaration --outDir dist",
+    "dist:cjs": "tsc --outDir dist --module commonjs",
+    "dist:esm": "tsc --outDir dist --module ES6 && .bin/change-extensions dist js mjs && .bin/change-extensions dist js.map mjs.map",
+    "dist:dts": "tsc --outDir dist --declaration --emitDeclarationOnly",
+    "dist": "yarn run clean && yarn run dist:esm && yarn run dist:cjs && yarn run dist:dts",
     "release": ".bin/release"
   },
   "devDependencies": {
