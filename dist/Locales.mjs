@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Locales {
+export default class Locales {
     constructor(_defaultLocale, _storage, validLocales) {
         this._defaultLocale = _defaultLocale;
         this._storage = _storage;
@@ -70,6 +68,5 @@ class Locales {
         return true;
     }
 }
-exports.default = Locales;
 ;
 //# sourceMappingURL=Locales.js.map
