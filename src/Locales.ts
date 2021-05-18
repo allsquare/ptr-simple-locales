@@ -9,6 +9,7 @@ export interface LocaleResources<LocaleT, T>
 {
   locales: Map<LocaleT, T>,
   current: T,
+  get(locate: LocaleT): T,
   parent: Locales<LocaleT>,
 }
 
@@ -77,6 +78,24 @@ export default class Locales<LocaleT>
       get current(): ResourcesT
       {
         return mappings.get(This._currentLocale)!;
+      },
+
+      get(locale: LocaleT): ResourcesT
+      {
+        if (This._validLocales)
+        {
+          if (!This._validLocales.has(locale))
+            throw new Error(`LocaleResources.get: locale is not part of Locales.validLocales: ${locale}`);
+        }
+        const resources = mappings.get(locale);
+        if (!resources)
+        {
+          if (This._validLocales) //Should not happen because this is checked in _checkNewResourcesMappings
+            throw new Error(`LocaleResources.get: mapping doesn't include locale, though it should: ${locale}`);
+          else
+            throw new Error(`LocaleResources.get: mapping doesn't include locale: ${locale}`);
+        }
+        return resources;
       },
 
       get parent()
