@@ -6,6 +6,7 @@ export interface LocaleStorage<LocaleT> {
 export interface LocaleResources<LocaleT, T> {
     locales: Map<LocaleT, T>;
     current: T;
+    get(locate: LocaleT): T;
     parent: Locales<LocaleT>;
 }
 export default class Locales<LocaleT> {
