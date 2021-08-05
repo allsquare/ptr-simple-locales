@@ -9,7 +9,7 @@ export interface LocaleResources<LocaleT, T>
 {
   locales: Map<LocaleT, T>,
   current: T,
-  get(locate: LocaleT): T,
+  get(locale: LocaleT): T,
   parent: Locales<LocaleT>,
 }
 
