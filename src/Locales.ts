@@ -1,11 +1,11 @@
-export interface LocaleStorage<LocaleT>
+export interface LocaleStorage<LocaleT extends string | number>
 {
   store(locale: LocaleT),
   get(): LocaleT | null,
   clear(): void,
 }
 
-export interface LocaleResources<LocaleT, ResourcesT>
+export interface LocaleResources<LocaleT extends string | number, ResourcesT>
 {
   locales: Map<LocaleT, ResourcesT>,
   current: ResourcesT,
@@ -13,7 +13,7 @@ export interface LocaleResources<LocaleT, ResourcesT>
   parent: Locales<LocaleT>,
 }
 
-export default class Locales<LocaleT>
+export default class Locales<LocaleT extends string | number>
 {
   private _currentLocale: LocaleT;
   private _validLocales: Set<LocaleT> | null = null;
