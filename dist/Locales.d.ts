@@ -1,24 +1,30 @@
-export interface LocaleStorage<LocaleT> {
+import { StaticLocalesWithDefaultLocale, StaticLocaleResources, StaticLocaleResourcesStrict } from './StaticLocales';
+export interface LocaleStorage<LocaleT extends string | number> {
     store(locale: LocaleT): any;
     get(): LocaleT | null;
     clear(): void;
 }
-export interface LocaleResources<LocaleT, T> {
-    locales: Map<LocaleT, T>;
-    current: T;
-    get(locate: LocaleT): T;
-    parent: Locales<LocaleT>;
+export interface LocaleResources<LocaleT extends string | number, DefaultLocaleT extends LocaleT, ResourcesT> extends StaticLocaleResources<LocaleT, ResourcesT> {
+    current: ResourcesT;
+    parent: Locales<LocaleT, DefaultLocaleT>;
 }
-export default class Locales<LocaleT> {
-    private _defaultLocale;
+export interface LocaleResourcesStrict<LocaleT extends string | number, DefaultLocaleT extends LocaleT, ResourcesT> extends StaticLocaleResourcesStrict<LocaleT, ResourcesT> {
+    current: ResourcesT;
+    parent: Locales<LocaleT, DefaultLocaleT>;
+}
+export default class Locales<LocaleT extends string | number, DefaultLocaleT extends LocaleT> extends StaticLocalesWithDefaultLocale<LocaleT, DefaultLocaleT> {
     private _storage?;
     private _currentLocale;
-    private _validLocales;
-    constructor(_defaultLocale: LocaleT, _storage?: LocaleStorage<LocaleT> | undefined, validLocales?: Set<LocaleT>);
-    private _checkNewResourcesMappings;
-    createResources<ResourcesT>(mappings: Map<LocaleT, ResourcesT>): LocaleResources<LocaleT, ResourcesT>;
+    constructor(defaultLocale: DefaultLocaleT, _storage?: LocaleStorage<LocaleT> | undefined);
+    private _completeStaticLocaleResources;
     readonly currentLocale: LocaleT;
-    readonly defaultLocale: LocaleT;
     private _setLocale;
     setLocale(locale: LocaleT, store?: boolean): boolean;
+    createResourcesStrict<ResourcesT>(mappings: Readonly<Record<LocaleT, ResourcesT>>): LocaleResourcesStrict<LocaleT, DefaultLocaleT, ResourcesT>;
+    createResourcesPartialWithDefaultLocale<ResourcesT, _DefaultLocaleT extends LocaleT>(defaultLocale: _DefaultLocaleT, mappings: Readonly<{
+        [key in _DefaultLocaleT]: ResourcesT;
+    } & Partial<Record<LocaleT, ResourcesT>>>): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>;
+    createResourcesPartial<ResourcesT>(mappings: Readonly<{
+        [key in DefaultLocaleT]: ResourcesT;
+    } & Partial<Record<LocaleT, ResourcesT>>>): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>;
 }

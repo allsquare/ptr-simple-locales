@@ -1,3 +1,5 @@
-import Locales, { LocaleStorage, LocaleResources } from './Locales';
-export { Locales, LocaleStorage, LocaleResources };
+import Locales from './Locales';
+export { StaticLocales, StaticLocalesWithDefaultLocale, StaticLocaleResources, StaticLocaleResourcesStrict, } from './StaticLocales';
+export { Locales };
+export { LocaleStorage, LocaleResources, LocaleResourcesStrict, } from './Locales';
 export default Locales;

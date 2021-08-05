@@ -1,87 +1,51 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Locales {
-    constructor(_defaultLocale, _storage, validLocales) {
-        this._defaultLocale = _defaultLocale;
+const StaticLocales_1 = require("./StaticLocales");
+class Locales extends StaticLocales_1.StaticLocalesWithDefaultLocale {
+    constructor(defaultLocale, _storage) {
+        super(defaultLocale);
         this._storage = _storage;
-        this._validLocales = null;
-        if (validLocales) {
-            if (!validLocales.has(_defaultLocale))
-                throw new Error(`Locales: provided validLocales don't include defaultLocale`);
-            this._validLocales = new Set(validLocales);
-        }
         if (_storage) {
             const storedLocale = _storage.get();
             if (storedLocale !== null) {
-                if (this.setLocale(storedLocale, false))
-                    return;
-                console.warn(`Locales: invalid stored locale: ${storedLocale}`);
-                _storage.clear();
+                this._setLocale(storedLocale);
+                return;
             }
         }
-        if (!this.setLocale(_defaultLocale, false))
-            throw new Error(`Locales: invalid default locale: ${_defaultLocale}`);
+        this._setLocale(this.defaultLocale);
     }
-    _checkNewResourcesMappings(mappings) {
-        if (!this._validLocales) {
-            if (!mappings.has(this._defaultLocale))
-                throw new Error(`Locales.createResources: missing locale in resources mappings: ${this._defaultLocale}`);
-            this._validLocales = new Set(mappings.keys());
-            if (!this._validLocales.has(this._currentLocale)) {
-                console.warn(`LocaleResources.createResources: currently selected locale is invalid; using default locale as fallback`);
-                this._setLocale(this._currentLocale);
-            }
-        }
-        else
-            for (let key of this._validLocales.values())
-                if (!mappings.has(key))
-                    throw new Error(`Locales.createResources: missing locale in resources mappings: ${key}`);
-    }
-    createResources(mappings) {
-        this._checkNewResourcesMappings(mappings);
+    _completeStaticLocaleResources(resources) {
         const This = this;
-        return {
-            get locales() {
-                return mappings;
-            },
-            get current() {
-                return mappings.get(This._currentLocale);
-            },
-            get(locale) {
-                if (This._validLocales) {
-                    if (!This._validLocales.has(locale))
-                        throw new Error(`LocaleResources.get: locale is not part of Locales.validLocales: ${locale}`);
-                }
-                const resources = mappings.get(locale);
-                if (!resources) {
-                    if (This._validLocales)
-                        throw new Error(`LocaleResources.get: mapping doesn't include locale, though it should: ${locale}`);
-                    else
-                        throw new Error(`LocaleResources.get: mapping doesn't include locale: ${locale}`);
-                }
-                return resources;
+        return Object.assign(Object.assign({}, resources), { get current() {
+                return resources.get(This._currentLocale);
             },
             get parent() {
                 return This;
-            },
-        };
+            } });
     }
     get currentLocale() {
         return this._currentLocale;
-    }
-    get defaultLocale() {
-        return this._defaultLocale;
     }
     _setLocale(locale) {
         this._currentLocale = locale;
     }
     setLocale(locale, store = true) {
-        if (this._validLocales && !this._validLocales.has(locale))
-            return false;
         this._setLocale(locale);
         if (store && this._storage)
             this._storage.store(locale);
         return true;
+    }
+    createResourcesStrict(mappings) {
+        const resources = super.createResourcesStrict(mappings);
+        return this._completeStaticLocaleResources(resources);
+    }
+    createResourcesPartialWithDefaultLocale(defaultLocale, mappings) {
+        const resources = super.createResourcesPartialWithDefaultLocale(defaultLocale, mappings);
+        return this._completeStaticLocaleResources(resources);
+    }
+    createResourcesPartial(mappings) {
+        const resources = super.createResourcesPartial(mappings);
+        return this._completeStaticLocaleResources(resources);
     }
 }
 exports.default = Locales;
