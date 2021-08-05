@@ -5,11 +5,11 @@ export interface LocaleStorage<LocaleT>
   clear(): void,
 }
 
-export interface LocaleResources<LocaleT, T>
+export interface LocaleResources<LocaleT, ResourcesT>
 {
-  locales: Map<LocaleT, T>,
-  current: T,
-  get(locale: LocaleT): T,
+  locales: Map<LocaleT, ResourcesT>,
+  current: ResourcesT,
+  get(locale: LocaleT): ResourcesT,
   parent: Locales<LocaleT>,
 }
 
