@@ -56,16 +56,7 @@ export class StaticLocalesWithDefaultLocale<
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {
-    const This = this;
-    return {
-      locales: mappings,
-      get(locale: LocaleT)
-      {
-        if (mappings[locale])
-          return mappings[locale];
-        return mappings[This._defaultLocale];
-      },
-    };
+    return this.createResourcesPartialWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
   }
 
   public get defaultLocale()
