@@ -1,4 +1,6 @@
 import type { ResourcesType } from './types';
+import type { PartialResources } from './partialResources';
+
 import {
   StaticLocalesWithDefaultLocale,
   StaticLocaleResources,
@@ -116,6 +118,23 @@ export default class Locales<
   ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
   {
     const resources = super.createResourcesPartial<ResourcesT>(mappings);
+    return this._completeStaticLocaleResources(resources);
+  }
+
+  public createResourcesPartialResourcesWithDefaultLocale<ResourcesT extends ResourcesType, _DefaultLocaleT extends LocaleT>(
+    defaultLocale: _DefaultLocaleT,
+    mappings: Readonly<{ [key in _DefaultLocaleT]: ResourcesT } & Record<LocaleT, PartialResources<ResourcesT>>>,
+  ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
+  {
+    const resources = super.createResourcesPartialResourcesWithDefaultLocale<ResourcesT, _DefaultLocaleT>(defaultLocale, mappings);
+    return this._completeStaticLocaleResources(resources);
+  }
+
+  public createResourcesPartialResources<ResourcesT extends ResourcesType>(
+    mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Record<LocaleT, PartialResources<ResourcesT>>>,
+  ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
+  {
+    const resources = super.createResourcesPartialResources<ResourcesT>(mappings);
     return this._completeStaticLocaleResources(resources);
   }
 };

@@ -1,4 +1,7 @@
 import type { ResourcesType } from './types';
+import type { PartialResources } from './partialResources';
+
+import { completePartialResources } from './partialResources';
 
 export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT extends ResourcesType>
 {
@@ -42,6 +45,28 @@ export class StaticLocales<LocaleT extends string | number>
       },
     };
   }
+
+  public createResourcesPartialResourcesWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
+    defaultLocale: DefaultLocaleT,
+    mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Record<LocaleT, PartialResources<ResourcesT>>>,
+  ): StaticLocaleResources<LocaleT, ResourcesT>
+  {
+    const defaultResources = mappings[defaultLocale];
+    const completedResourcesMappings = new Map<LocaleT, ResourcesT>();
+    completedResourcesMappings.set(defaultLocale, defaultResources);
+    return {
+      locales: mappings,
+      get(locale: LocaleT)
+      {
+        const resources = completedResourcesMappings.get(locale);
+        if (resources)
+          return resources;
+        const completedResources = completePartialResources<ResourcesT>(mappings[locale], defaultResources);
+        completedResourcesMappings.set(locale, completedResources);
+        return completedResources;
+      },
+    };
+  }
 }
 
 export class StaticLocalesWithDefaultLocale<
@@ -59,6 +84,13 @@ export class StaticLocalesWithDefaultLocale<
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {
     return this.createResourcesPartialWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
+  }
+
+  public createResourcesPartialResources<ResourcesT extends ResourcesType>(
+    mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Record<LocaleT, PartialResources<ResourcesT>>>,
+  ): StaticLocaleResources<LocaleT, ResourcesT>
+  {
+    return this.createResourcesPartialResourcesWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
   }
 
   public get defaultLocale()
