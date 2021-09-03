@@ -8,6 +8,10 @@ export {
   makeResourcesLeafType
 } from './types';
 export {
+  PartialResources,
+  completePartialResources,
+} from './partialResources';
+export {
   StaticLocales,
   StaticLocalesWithDefaultLocale,
   StaticLocaleResources,
