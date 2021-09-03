@@ -137,4 +137,21 @@ export default class Locales<
     const resources = super.createResourcesPartialResources<ResourcesT>(mappings);
     return this._completeStaticLocaleResources(resources);
   }
+
+  public createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType, _DefaultLocaleT extends LocaleT>(
+    defaultLocale: _DefaultLocaleT,
+    mappings: Readonly<{ [key in _DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, PartialResources<ResourcesT>>>>,
+  ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
+  {
+    const resources = super.createResourcesPartialWithDefaultLocale<ResourcesT, _DefaultLocaleT>(defaultLocale, mappings);
+    return this._completeStaticLocaleResources(resources);
+  }
+
+  public createResourcesPartial<ResourcesT extends ResourcesType>(
+    mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, PartialResources<ResourcesT>>>>,
+  ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
+  {
+    const resources = super.createResourcesPartial<ResourcesT>(mappings);
+    return this._completeStaticLocaleResources(resources);
+  }
 };
