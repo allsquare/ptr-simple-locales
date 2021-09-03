@@ -5,6 +5,7 @@ export {
   ResourcesNodeType,
   ResourcesType,
   isResourcesLeafType,
+  makeResourcesLeafType
 } from './types';
 export {
   StaticLocales,
