@@ -39,6 +39,22 @@ class Locales extends StaticLocales_1.StaticLocalesWithDefaultLocale {
         const resources = super.createResourcesStrict(mappings);
         return this._completeStaticLocaleResources(resources);
     }
+    createResourcesPartialLocalesWithDefaultLocale(defaultLocale, mappings) {
+        const resources = super.createResourcesPartialLocalesWithDefaultLocale(defaultLocale, mappings);
+        return this._completeStaticLocaleResources(resources);
+    }
+    createResourcesPartialLocales(mappings) {
+        const resources = super.createResourcesPartialLocales(mappings);
+        return this._completeStaticLocaleResources(resources);
+    }
+    createResourcesPartialResourcesWithDefaultLocale(defaultLocale, mappings) {
+        const resources = super.createResourcesPartialResourcesWithDefaultLocale(defaultLocale, mappings);
+        return this._completeStaticLocaleResources(resources);
+    }
+    createResourcesPartialResources(mappings) {
+        const resources = super.createResourcesPartialResources(mappings);
+        return this._completeStaticLocaleResources(resources);
+    }
     createResourcesPartialWithDefaultLocale(defaultLocale, mappings) {
         const resources = super.createResourcesPartialWithDefaultLocale(defaultLocale, mappings);
         return this._completeStaticLocaleResources(resources);

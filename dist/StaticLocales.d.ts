@@ -1,23 +1,37 @@
-export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT> {
+import type { ResourcesType } from './types';
+import type { PartialResources } from './partialResources';
+export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT extends ResourcesType> {
     locales: Readonly<Record<LocaleT, ResourcesT>>;
     get(locale: LocaleT): ResourcesT;
 }
-export interface StaticLocaleResources<LocaleT extends string | number, ResourcesT> {
+export interface StaticLocaleResources<LocaleT extends string | number, ResourcesT extends ResourcesType> {
     locales: Readonly<Partial<Record<LocaleT, ResourcesT>>>;
     get(locale: LocaleT): ResourcesT;
 }
 export declare class StaticLocales<LocaleT extends string | number> {
-    createResourcesStrict<ResourcesT>(mappings: Readonly<Record<LocaleT, ResourcesT>>): StaticLocaleResourcesStrict<LocaleT, ResourcesT>;
-    createResourcesPartialWithDefaultLocale<ResourcesT, DefaultLocaleT extends LocaleT>(defaultLocale: DefaultLocaleT, mappings: Readonly<{
+    createResourcesStrict<ResourcesT extends ResourcesType>(mappings: Readonly<Record<LocaleT, ResourcesT>>): StaticLocaleResourcesStrict<LocaleT, ResourcesT>;
+    createResourcesPartialLocalesWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(defaultLocale: DefaultLocaleT, mappings: Readonly<{
         [key in DefaultLocaleT]: ResourcesT;
     } & Partial<Record<LocaleT, ResourcesT>>>): StaticLocaleResources<LocaleT, ResourcesT>;
+    createResourcesPartialResourcesWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(defaultLocale: DefaultLocaleT, mappings: Readonly<{
+        [key in DefaultLocaleT]: ResourcesT;
+    } & Record<LocaleT, PartialResources<ResourcesT>>>): StaticLocaleResources<LocaleT, ResourcesT>;
+    createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(defaultLocale: DefaultLocaleT, mappings: Readonly<{
+        [key in DefaultLocaleT]: ResourcesT;
+    } & Partial<Record<LocaleT, PartialResources<ResourcesT>>>>): StaticLocaleResources<LocaleT, ResourcesT>;
 }
 export declare class StaticLocalesWithDefaultLocale<LocaleT extends string | number, DefaultLocaleT extends LocaleT> extends StaticLocales<LocaleT> {
     private _defaultLocale;
     constructor(_defaultLocale: any);
-    createResourcesPartial<ResourcesT>(mappings: Readonly<{
+    createResourcesPartialLocales<ResourcesT extends ResourcesType>(mappings: Readonly<{
         [key in DefaultLocaleT]: ResourcesT;
     } & Partial<Record<LocaleT, ResourcesT>>>): StaticLocaleResources<LocaleT, ResourcesT>;
-    readonly defaultLocale: any;
+    createResourcesPartialResources<ResourcesT extends ResourcesType>(mappings: Readonly<{
+        [key in DefaultLocaleT]: ResourcesT;
+    } & Record<LocaleT, PartialResources<ResourcesT>>>): StaticLocaleResources<LocaleT, ResourcesT>;
+    createResourcesPartial<ResourcesT extends ResourcesType>(mappings: Readonly<{
+        [key in DefaultLocaleT]: ResourcesT;
+    } & Partial<Record<LocaleT, PartialResources<ResourcesT>>>>): StaticLocaleResources<LocaleT, ResourcesT>;
+    get defaultLocale(): any;
 }
 export default StaticLocales;
