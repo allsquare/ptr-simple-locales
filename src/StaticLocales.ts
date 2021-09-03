@@ -30,7 +30,7 @@ export class StaticLocales<LocaleT extends string | number>
     };
   }
 
-  public createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
+  public createResourcesPartialLocalesWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
     defaultLocale: DefaultLocaleT,
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
@@ -79,11 +79,11 @@ export class StaticLocalesWithDefaultLocale<
     super();
   }
 
-  public createResourcesPartial<ResourcesT extends ResourcesType>(
+  public createResourcesPartialLocales<ResourcesT extends ResourcesType>(
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {
-    return this.createResourcesPartialWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
+    return this.createResourcesPartialLocalesWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
   }
 
   public createResourcesPartialResources<ResourcesT extends ResourcesType>(

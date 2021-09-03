@@ -104,20 +104,20 @@ export default class Locales<
     return this._completeStaticLocaleResources(resources);
   }
 
-  public createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType, _DefaultLocaleT extends LocaleT>(
+  public createResourcesPartialLocalesWithDefaultLocale<ResourcesT extends ResourcesType, _DefaultLocaleT extends LocaleT>(
     defaultLocale: _DefaultLocaleT,
     mappings: Readonly<{ [key in _DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
   {
-    const resources = super.createResourcesPartialWithDefaultLocale<ResourcesT, _DefaultLocaleT>(defaultLocale, mappings);
+    const resources = super.createResourcesPartialLocalesWithDefaultLocale<ResourcesT, _DefaultLocaleT>(defaultLocale, mappings);
     return this._completeStaticLocaleResources(resources);
   }
 
-  public createResourcesPartial<ResourcesT extends ResourcesType>(
+  public createResourcesPartialLocales<ResourcesT extends ResourcesType>(
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): LocaleResources<LocaleT, DefaultLocaleT, ResourcesT>
   {
-    const resources = super.createResourcesPartial<ResourcesT>(mappings);
+    const resources = super.createResourcesPartialLocales<ResourcesT>(mappings);
     return this._completeStaticLocaleResources(resources);
   }
 
