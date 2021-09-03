@@ -1,10 +1,12 @@
-export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT>
+import type { ResourcesType } from './types';
+
+export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT extends ResourcesType>
 {
   locales: Readonly<Record<LocaleT, ResourcesT>>,
   get(locale: LocaleT): ResourcesT,
 }
 
-export interface StaticLocaleResources<LocaleT extends string | number, ResourcesT>
+export interface StaticLocaleResources<LocaleT extends string | number, ResourcesT extends ResourcesType>
 {
   locales: Readonly<Partial<Record<LocaleT, ResourcesT>>>,
   get(locale: LocaleT): ResourcesT,
@@ -12,7 +14,7 @@ export interface StaticLocaleResources<LocaleT extends string | number, Resource
 
 export class StaticLocales<LocaleT extends string | number>
 {
-  public createResourcesStrict<ResourcesT>(
+  public createResourcesStrict<ResourcesT extends ResourcesType>(
     mappings: Readonly<Record<LocaleT, ResourcesT>>,
   ): StaticLocaleResourcesStrict<LocaleT, ResourcesT>
   {
@@ -25,7 +27,7 @@ export class StaticLocales<LocaleT extends string | number>
     };
   }
 
-  public createResourcesPartialWithDefaultLocale<ResourcesT, DefaultLocaleT extends LocaleT>(
+  public createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
     defaultLocale: DefaultLocaleT,
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
@@ -52,7 +54,7 @@ export class StaticLocalesWithDefaultLocale<
     super();
   }
 
-  public createResourcesPartial<ResourcesT>(
+  public createResourcesPartial<ResourcesT extends ResourcesType>(
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {

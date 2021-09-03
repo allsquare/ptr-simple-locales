@@ -1,6 +1,11 @@
 import Locales from './Locales';
 
 export {
+  ResourcesLeafType,
+  ResourcesNodeType,
+  ResourcesType,
+} from './types';
+export {
   StaticLocales,
   StaticLocalesWithDefaultLocale,
   StaticLocaleResources,
