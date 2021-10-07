@@ -1,7 +1,7 @@
 const CustomResourcesLeafTypeSymbol = Symbol('StaticLocales.CustomResourcesLeafType');
 
 type CustomResourcesLeafType = { [CustomResourcesLeafTypeSymbol]: true };
-export type ResourcesLeafType = string | Function | Array<any> | CustomResourcesLeafType;
+export type ResourcesLeafType = string | Function | ReadonlyArray<any> | CustomResourcesLeafType;
 export type ResourcesNodeType = _ResourcesType | ResourcesLeafType;
 export type ResourcesType<KeyType extends string | number | symbol> = Record<KeyType, ResourcesNodeType>;
 interface _ResourcesType extends ResourcesType<string | number | symbol> {} //Needed to prevent circular types
