@@ -2,10 +2,11 @@ const CustomResourcesLeafTypeSymbol = Symbol('StaticLocales.CustomResourcesLeafT
 
 type CustomResourcesLeafType = { [CustomResourcesLeafTypeSymbol]: true };
 export type ResourcesLeafType = string | Function | Array<any> | CustomResourcesLeafType;
-export type ResourcesNodeType = ResourcesType | ResourcesLeafType;
-export type ResourcesType = { [key: string]: ResourcesNodeType };
+export type ResourcesNodeType = _ResourcesType | ResourcesLeafType;
+export type ResourcesType<KeyType extends string | number | symbol> = Record<KeyType, ResourcesNodeType>;
+interface _ResourcesType extends ResourcesType<string | number | symbol> {} //Needed to prevent circular types
 
-export function isResourcesLeafType(node: ResourcesLeafType | Record<string, unknown>): node is ResourcesLeafType
+export function isResourcesLeafType(node: ResourcesLeafType | object): node is ResourcesLeafType
 {
   if (typeof node === 'string')
     return true;

@@ -3,13 +3,13 @@ import type { PartialResources } from './partialResources';
 
 import { completePartialResources } from './partialResources';
 
-export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT extends ResourcesType>
+export interface StaticLocaleResourcesStrict<LocaleT extends string | number, ResourcesT extends ResourcesType<keyof ResourcesT>>
 {
   locales: Readonly<Record<LocaleT, ResourcesT>>,
   get(locale: LocaleT): ResourcesT,
 }
 
-export interface StaticLocaleResources<LocaleT extends string | number, ResourcesT extends ResourcesType>
+export interface StaticLocaleResources<LocaleT extends string | number, ResourcesT extends ResourcesType<keyof ResourcesT>>
 {
   locales: Readonly<Partial<Record<LocaleT, ResourcesT>>>,
   get(locale: LocaleT): ResourcesT,
@@ -17,7 +17,7 @@ export interface StaticLocaleResources<LocaleT extends string | number, Resource
 
 export class StaticLocales<LocaleT extends string | number>
 {
-  public createResourcesStrict<ResourcesT extends ResourcesType>(
+  public createResourcesStrict<ResourcesT extends ResourcesType<keyof ResourcesT>>(
     mappings: Readonly<Record<LocaleT, ResourcesT>>,
   ): StaticLocaleResourcesStrict<LocaleT, ResourcesT>
   {
@@ -30,7 +30,7 @@ export class StaticLocales<LocaleT extends string | number>
     };
   }
 
-  public createResourcesPartialLocalesWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
+  public createResourcesPartialLocalesWithDefaultLocale<ResourcesT extends ResourcesType<keyof ResourcesT>, DefaultLocaleT extends LocaleT>(
     defaultLocale: DefaultLocaleT,
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
@@ -46,7 +46,7 @@ export class StaticLocales<LocaleT extends string | number>
     };
   }
 
-  public createResourcesPartialResourcesWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
+  public createResourcesPartialResourcesWithDefaultLocale<ResourcesT extends ResourcesType<keyof ResourcesT>, DefaultLocaleT extends LocaleT>(
     defaultLocale: DefaultLocaleT,
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Record<LocaleT, PartialResources<ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
@@ -68,7 +68,7 @@ export class StaticLocales<LocaleT extends string | number>
     };
   }
 
-  public createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType, DefaultLocaleT extends LocaleT>(
+  public createResourcesPartialWithDefaultLocale<ResourcesT extends ResourcesType<keyof ResourcesT>, DefaultLocaleT extends LocaleT>(
     defaultLocale: DefaultLocaleT,
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, PartialResources<ResourcesT>>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
@@ -104,21 +104,21 @@ export class StaticLocalesWithDefaultLocale<
     super();
   }
 
-  public createResourcesPartialLocales<ResourcesT extends ResourcesType>(
+  public createResourcesPartialLocales<ResourcesT extends ResourcesType<keyof ResourcesT>>(
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {
     return this.createResourcesPartialLocalesWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
   }
 
-  public createResourcesPartialResources<ResourcesT extends ResourcesType>(
+  public createResourcesPartialResources<ResourcesT extends ResourcesType<keyof ResourcesT>>(
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Record<LocaleT, PartialResources<ResourcesT>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {
     return this.createResourcesPartialResourcesWithDefaultLocale<ResourcesT, DefaultLocaleT>(this._defaultLocale, mappings);
   }
 
-  public createResourcesPartial<ResourcesT extends ResourcesType>(
+  public createResourcesPartial<ResourcesT extends ResourcesType<keyof ResourcesT>>(
     mappings: Readonly<{ [key in DefaultLocaleT]: ResourcesT } & Partial<Record<LocaleT, PartialResources<ResourcesT>>>>,
   ): StaticLocaleResources<LocaleT, ResourcesT>
   {
